@@ -1,0 +1,76 @@
+// Prisma schema file for SarathiEdTech PostgreSQL database
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum JobStatus {
+  DRAFT
+  PUBLISHED
+  UNPUBLISHED
+  EXPIRED
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Job {
+  id              String    @id @default(uuid())
+  title           String
+  slug            String    @unique
+  companyName     String
+  location        String
+  employmentType  String    @default("Full-time")
+  experience      String    @default("Freshers / 0-2 yrs")
+  salary          String?
+  description     String    @db.Text
+  skills          String[]  @default([])
+  applicationUrl  String
+  referralUrl     String?
+  status          JobStatus @default(DRAFT)
+  viewsCount      Int       @default(0)
+  clicksCount     Int       @default(0)
+  publishedAt     DateTime?
+  expiresAt       DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  views  JobView[]
+  clicks JobClick[]
+
+  @@index([status, publishedAt])
+  @@index([slug])
+  @@index([companyName])
+}
+
+model JobView {
+  id        String   @id @default(uuid())
+  jobId     String
+  job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([jobId])
+  @@index([createdAt])
+}
+
+model JobClick {
+  id        String   @id @default(uuid())
+  jobId     String
+  job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  clickedAt DateTime @default(now())
+  createdAt DateTime @default(now())
+
+  @@index([jobId])
+  @@index([clickedAt])
+  @@index([createdAt])
+}
