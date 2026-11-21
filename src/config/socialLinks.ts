@@ -1,5 +1,5 @@
 export const socialLinks = {
-  whatsapp: "https://chat.whatsapp.com/F449KAxdymRKNj6Cwkhqya",
+  whatsapp: "https://chat.whatsapp.com/KzNu63ukoJF1cwG4Jg35Wh",
   linkedin: "https://www.linkedin.com/in/sarathiedtech",
   telegram: "https://t.me/SarathiEdTech",
   whatsappChannel: "https://whatsapp.com/channel/0029Vb98k2VICVfkMyEHBv0p",
